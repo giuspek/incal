@@ -43,11 +43,11 @@ def learn_bottom_up(data, labels, learn_f, w_k, w_h, init_k=1, init_h=0, max_k=N
     while solution is None:
         i += 1
         k, h = frontier.pop()
-        # print("Attempting to solve with k={} and h={}".format(k, h))
+        print("Attempting to solve with k={} and h={}".format(k, h))
         start = time.time()
         try:
             solution = learn_f(data, labels, i, k, h)
-            # print("Found solution after {:.2f}s".format(time.time() - start))
+            print("Found solution after {:.2f}s".format(time.time() - start))
         except NoFormulaFound as e:
             data = e.data
             labels = e.labels

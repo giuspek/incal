@@ -40,7 +40,7 @@ class IncrementalLearner(Learner):
         return data, labels, formula
 
     def incremental_loop(self, domain, data, labels, initial_indices, solver):
-        active_indices = list(range(len(data))) if initial_indices is None else initial_indices
+        active_indices = set(range(len(data))) if initial_indices is None else initial_indices
         all_active_indices = active_indices
         self.observer.observe("initial", data, labels, active_indices)
         formula = None
@@ -61,8 +61,8 @@ class IncrementalLearner(Learner):
             selection_start = time.time()
             data, labels, new_active_indices = \
                 self.selection_strategy.select_active(domain, data, labels, formula, all_active_indices)
-            active_indices = list(new_active_indices)
-            all_active_indices += active_indices
+            active_indices = set(new_active_indices)
+            all_active_indices = all_active_indices.union(active_indices)
             selection_time = time.time() - selection_start
             self.observer.observe("iteration", data, labels, formula, active_indices, solving_time, selection_time)
         return data, formula, labels
